@@ -64,7 +64,7 @@ mytoken = panel.get_token()
     - 
 ## Thanks To 
 
-- [ErfanTech]([https://github.com/alireza0/](https://github.com/ErfanTech)) :laughing:
+- [ErfanTech](https://github.com/ErfanTech) :laughing:
 
 # Examples
 ### Get Token
