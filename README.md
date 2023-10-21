@@ -1,7 +1,7 @@
 # marzpy
 A Python library that helps you easily use [Marzban](https://github.com/Gozargah/Marzban)'s API panel
 ## installation
-```
+```shell
 pip install marzpy
 ```
 requirements : ```requests```
