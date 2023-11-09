@@ -104,7 +104,7 @@ class UserMethods:
         send_request(f"user/{user_username}/reset", token, "post")
         return "success"
 
-    def get_all_users(self, token: dict, username=None):
+    def get_all_users(self, token: dict, username=None, status=None):
         """get all users list.
 
         Parameters:
@@ -116,6 +116,11 @@ class UserMethods:
         endpoint = "users"
         if username:
             endpoint += f"?username={username}"
+        if status:
+            if "?" in endpoint:
+                endpoint += f"&status={status}"
+            else:
+                endpoint += f"?status={status}"
         request = send_request(endpoint, token, "get")
         user_list = [
             User(
