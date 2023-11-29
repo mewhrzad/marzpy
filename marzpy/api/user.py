@@ -1,7 +1,7 @@
 from .send_requests import *
 
 def delete_if_exist(dic,keys:list):
-    for key in keys
+    for key in keys:
         if key in dic:
             del dic[key]
     return dic
