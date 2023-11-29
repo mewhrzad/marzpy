@@ -48,6 +48,7 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
+        user.status = "active"
         request = send_request(
             endpoint="user", token=token, method="post", data=user.__dict__
         )
@@ -176,3 +177,4 @@ class UserMethods:
         Returns: `~int`: count of users
         """
         return self.get_all_users(token)["content"]["total"]
+
