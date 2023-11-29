@@ -133,6 +133,8 @@ class UserMethods:
             )
         ]
         for user in request["users"]:
+            if "note" in user:
+                del user['note']
             user_list.append(User(**user))
         del user_list[0]
         return user_list
