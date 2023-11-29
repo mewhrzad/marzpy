@@ -1,6 +1,10 @@
 from .send_requests import *
 
-
+def delete_if_exist(dic,keys:list):
+    for key in keys
+        if key in dic:
+            del dic[key]
+    return dic
 class User:
     def __init__(
         self,
@@ -47,7 +51,7 @@ class UserMethods:
         request = send_request(
             endpoint="user", token=token, method="post", data=user.__dict__
         )
-
+        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def get_user(self, user_username: str, token: dict):
@@ -61,6 +65,7 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(f"user/{user_username}", token=token, method="get")
+        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def modify_user(self, user_username: str, token: dict, user: object):
@@ -76,6 +81,7 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(f"user/{user_username}", token, "put", user.__dict__)
+        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def delete_user(self, user_username: str, token: dict):
@@ -133,8 +139,7 @@ class UserMethods:
             )
         ]
         for user in request["users"]:
-            if "note" in user:
-                del user['note']
+            user = delete_if_exist(user,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
             user_list.append(User(**user))
         del user_list[0]
         return user_list
