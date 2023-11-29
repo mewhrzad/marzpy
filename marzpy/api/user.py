@@ -17,6 +17,7 @@ class User:
         links=[],
         subscription_url="",
         excluded_inbounds={},
+        **kwargs
     ):
         self.username = username
         self.proxies = proxies
