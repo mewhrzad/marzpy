@@ -29,7 +29,7 @@ class NodeMethods:
     def __init__(self) -> None:
         pass
 
-    def add_node(self, token: dict, node: Node):
+    def add_node(self, node: Node):
         """add new node.
 
         Parameters:
@@ -42,11 +42,11 @@ class NodeMethods:
         """
         return Node(
             **send_request(
-                endpoint="node", token=token, method="post", data=node.__dict__
+                endpoint="node", token=self.token, method="post", data=node.__dict__
             )
         )
 
-    def get_node_by_id(self, id: int, token: dict):
+    def get_node_by_id(self, id: int):
         """get exist node from id.
 
         Parameters:
@@ -57,9 +57,11 @@ class NodeMethods:
         Returns:
             `~object`: information of new node
         """
-        return Node(**send_request(endpoint=f"node/{id}", token=token, method="get"))
+        return Node(
+            **send_request(endpoint=f"node/{id}", token=self.token, method="get")
+        )
 
-    def modify_node_by_id(self, id: int, token: dict, node: object):
+    def modify_node_by_id(self, id: int, node: object):
         """edit exist node from id.
 
         Parameters:
@@ -73,11 +75,11 @@ class NodeMethods:
             `~object`: information of new node
         """
         request = send_request(
-            endpoint=f"node/{id}", token=token, method="put", data=node.__dict__
+            endpoint=f"node/{id}", token=self.token, method="put", data=node.__dict__
         )
         return Node(**request)
 
-    def delete_node(self, id: int, token: dict):
+    def delete_node(self, id: int):
         """delete node from id.
 
         Parameters:
@@ -88,10 +90,10 @@ class NodeMethods:
         Returns:
             `~str`: success
         """
-        send_request(endpoint=f"node/{id}", token=token, method="delete")
+        send_request(endpoint=f"node/{id}", token=self.token, method="delete")
         return "success"
 
-    def get_all_nodes(self, token: dict):
+    def get_all_nodes(self):
         """get all nodes.
 
         Parameters:
@@ -100,14 +102,14 @@ class NodeMethods:
         Returns:
             `~list of objects`: [Node]
         """
-        request = send_request(endpoint="nodes", token=token, method="get")
+        request = send_request(endpoint="nodes", token=self.token, method="get")
         node_list = [Node()]
         for node in request:
             node_list.append(Node(**node))
         del node_list[0]
         return node_list
 
-    def reconnect_node(self, id: int, token: dict):
+    def reconnect_node(self, id: int):
         """reconnect from id.
 
         Parameters:
@@ -119,12 +121,12 @@ class NodeMethods:
             `~str`: success
         """
         request = send_request(
-            endpoint=f"node/{id}/reconnect", token=token, method="post"
+            endpoint=f"node/{id}/reconnect", token=self.token, method="post"
         )
 
         return "success"
 
-    def get_nodes_usage(self, token: dict):
+    def get_nodes_usage(self):
         """get all nodes usage.
 
         Parameters:
@@ -133,5 +135,5 @@ class NodeMethods:
         Returns:
             `~dict`: "usage" : []
         """
-        request = send_request(endpoint="nodes/usage", token=token, method="get")
+        request = send_request(endpoint="nodes/usage", token=self.token, method="get")
         return request["usages"]

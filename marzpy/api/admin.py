@@ -35,7 +35,7 @@ class Admin:
             print(f"JSON Decode Error: {ex}")
             return None
 
-    def get_current_admin(self, token: dict):
+    def get_current_admin(self):
         """get current admin who has logged in.
 
         Parameters:
@@ -44,9 +44,9 @@ class Admin:
         Returns:
         `~dict`: {"username": "str" , "is_sudo": true}
         """
-        return send_request(endpoint="admin", token=token, method="get")
+        return send_request(endpoint="admin", token=self.token, method="get")
 
-    def create_admin(self, token: dict, data: dict):
+    def create_admin(self, data: dict):
         """add new admin.
 
         Parameters:
@@ -56,10 +56,10 @@ class Admin:
         Returns:
         `~dict`: username && is_sudo
         """
-        send_request(endpoint="admin", token=token, method="post", data=data)
+        send_request(endpoint="admin", token=self.token, method="post", data=data)
         return "success"
 
-    def change_admin_password(self, username: str, token: dict, data: dict):
+    def change_admin_password(self, username: str, data: dict):
         """change exist admins password.
 
         *you cant modify sudo admins password*
@@ -74,13 +74,13 @@ class Admin:
         """
         send_request(
             endpoint=f"admin/{username}",
-            token=token,
+            token=self.token,
             method="put",
             data=data,
         )
         return "success"
 
-    def delete_admin(self, username: str, token: dict):
+    def delete_admin(self, username: str):
         """delete admin.
 
         Parameters:
@@ -90,10 +90,10 @@ class Admin:
         Returns:
         `~str`: success
         """
-        send_request(endpoint=f"admin/{username}", token=token, method="delete")
+        send_request(endpoint=f"admin/{username}", token=self.token, method="delete")
         return "success"
 
-    def get_all_admins(self, token: dict):
+    def get_all_admins(self):
         """get all admins.
 
         Parameters:
@@ -102,4 +102,4 @@ class Admin:
         Returns:
         `~list`: [{username && is_sudo}]
         """
-        return send_request(endpoint=f"admins", token=token, method="get")
+        return send_request(endpoint=f"admins", token=self.token, method="get")

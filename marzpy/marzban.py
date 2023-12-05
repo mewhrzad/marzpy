@@ -1,4 +1,5 @@
 from .api import Methods
+from .api import Admin
 
 
 class Marzban(Methods):
@@ -7,3 +8,9 @@ class Marzban(Methods):
         self.username = username
         self.password = password
         self.panel_address = panel_address
+
+    @property
+    def token(self):
+        return Methods.get_token(
+            Admin(self.username, self.password, self.panel_address)
+        )

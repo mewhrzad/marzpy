@@ -5,7 +5,7 @@ class System:
     def __init__(self) -> None:
         pass
 
-    def get_system_stats(self, token: dict):
+    def get_system_stats(self):
         """get server stats.
 
         Parameters:
@@ -14,9 +14,9 @@ class System:
         Returns:
             `~dict`: server stats
         """
-        return send_request(endpoint="system", token=token, method="get")
+        return send_request(endpoint="system", token=self.token, method="get")
 
-    def get_inbounds(self, token: dict):
+    def get_inbounds(self):
         """get server inbounds.
 
         Parameters:
@@ -25,9 +25,9 @@ class System:
         Returns:
             `~dict`: server inbounds
         """
-        return send_request(endpoint="inbounds", token=token, method="get")
+        return send_request(endpoint="inbounds", token=self.token, method="get")
 
-    def get_hosts(self, token: dict):
+    def get_hosts(self):
         """get server hosts.
 
         Parameters:
@@ -36,9 +36,9 @@ class System:
         Returns:
             `~dict`: server hosts
         """
-        return send_request(endpoint="hosts", token=token, method="get")
+        return send_request(endpoint="hosts", token=self.token, method="get")
 
-    def modify_hosts(self, token: dict, data: dict):
+    def modify_hosts(self, data: dict):
         """get server hosts.
 
         Parameters:
@@ -47,4 +47,4 @@ class System:
         Returns:
             `~dict`: server hosts
         """
-        return send_request(endpoint="hosts", token=token, method="put", data=data)
+        return send_request(endpoint="hosts", token=self.token, method="put", data=data)

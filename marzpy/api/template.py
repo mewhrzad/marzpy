@@ -22,7 +22,7 @@ class Template:
 
 
 class TemplateMethods:
-    def get_all_templates(self, token: dict):
+    def get_all_templates(self):
         """get all templates list.
 
         Parameters:
@@ -31,14 +31,14 @@ class TemplateMethods:
         Returns:
             `~list`: list of templates
         """
-        request = send_request(endpoint="user_template", token=token, method="get")
+        request = send_request(endpoint="user_template", token=self.token, method="get")
         template_list = [Template()]
         for user in request:
             template_list.append(Template(**user))
         del template_list[0]
         return template_list
 
-    def add_template(self, template: Template, token: dict):
+    def add_template(self, template: Template):
         """add new template.
 
         Parameters:
@@ -49,11 +49,14 @@ class TemplateMethods:
             `~object`: information of new template
         """
         request = send_request(
-            endpoint="user_template", token=token, method="post", data=template.__dict__
+            endpoint="user_template",
+            token=self.token,
+            method="post",
+            data=template.__dict__,
         )
         return Template(**request)
 
-    def get_template_by_id(self, id: int, token: dict):
+    def get_template_by_id(self, id: int):
         """get exist template from id.
 
         Parameters:
@@ -63,12 +66,12 @@ class TemplateMethods:
             `~object`: information of template
         """
         request = send_request(
-            endpoint=f"user_template/{id}", token=token, method="get"
+            endpoint=f"user_template/{id}", token=self.token, method="get"
         )
 
         return Template(**request)
 
-    def modify_template_by_id(self, id: int, token: dict, template: Template):
+    def modify_template_by_id(self, id: int, template: Template):
         """edit exist template from id.
 
         Parameters:
@@ -80,13 +83,13 @@ class TemplateMethods:
         """
         request = send_request(
             endpoint=f"user_template/{id}",
-            token=token,
+            token=self.token,
             method="put",
             data=template.__dict__,
         )
         return Template(**request)
 
-    def delete_template_by_id(self, id: int, token: dict):
+    def delete_template_by_id(self, id: int):
         """delete template from id.
 
         Parameters:
@@ -95,5 +98,5 @@ class TemplateMethods:
         Returns:
             `~str`: success
         """
-        send_request(endpoint=f"user_template/{id}", token=token, method="delete")
+        send_request(endpoint=f"user_template/{id}", token=self.token, method="delete")
         return "success"

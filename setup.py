@@ -5,11 +5,11 @@ with open("README.md", "r") as file:
 
 setup(
     name="marzpy",
-    version="0.0.1",
-    author="Mewhrzad",
+    version="0.0.2",
+    author="Mewhrzad, IgorDuino",
     description="a simple application with python to manage Marzban panel",
     long_description="text/markdown",
-    url="https://github.com/Mewhrzad/marzpy",
+    url="https://github.com/igorDuino/marzpy",
     keywords=["marzpy", "Marzban", "Gozargah", "Marzban python", "Marzban API"],
     packages=find_packages(),
     ins=["requests"],
