@@ -11,8 +11,6 @@ from marzpy import Marzban
 
 panel = Marzban("username","password","https://example.com")
 
-mytoken = panel.get_token()
-
 # panel.anyfunction()
 
 ```
@@ -67,43 +65,33 @@ mytoken = panel.get_token()
 - [ErfanTech](https://github.com/ErfanTech) :laughing:
 
 # Examples
-### Get Token
-```python
-
-from marzpy import Marzban
-
-panel = Marzban("username","password","https://example.com")
-
-mytoken = panel.get_token()
-
-```
 ### Get Current admin
 ```python
-admin = panel.get_current_admin(token=mytoken)
+admin = panel.get_current_admin()
 print(admin) #output: {'username': 'admin', 'is_sudo': True}
 ```
 ### Create Admin
 ```python
 info = {'username':'test','password':'pasword','is_sudo':False}
-rsault = panel.create_admin(token=mytoken,data=info)
+rsault = panel.create_admin(data=info)
 print(result) #output: success
 ```
 ### Modify Admin
 ```python
 target_admin = "test"
 info = {'password':'newpassword','is_sudo':False}
-result = panel.change_admin_password(username=target_admin,token=mytoken,data=info)
+result = panel.change_admin_password(username=target_admin,data=info)
 print(result) #output: success
 ```
 ### Remove Admin
 ```python
 target_admin = "test"
-result = panel.delete_admin(username=target_admin,token=mytoken)
+result = panel.delete_admin(username=target_admin)
 print(result) #output: success
 ```
 ### Get All Admins
 ```python
-result = panel.get_all_admins(token=mytoken)
+result = panel.get_all_admins()
 print(result) 
 #output: [{'username': 'test', 'is_sudo': True}, {'username': 'test1', 'is_sudo': False}]
 ```
@@ -121,17 +109,17 @@ print(result) #output: User information (usage,links,inbounds,....)
 ```
 ### Get System Stats
 ```python
-result = panel.get_system_stats(token=mytoken)
+result = panel.get_system_stats()
 print(result) #output: system stats Memory & CPU usage ...
 ```
 ### Get Inbounds
 ```python
-result = panel.get_inbounds(token=mytoken)
+result = panel.get_inbounds()
 print(result) #output: list of inbounds
 ```
 ### Get Hosts
 ```python
-result = panel.get_hosts(token=mytoken)
+result = panel.get_hosts()
 print(result) #output: list of hosts
 ```
 ### Modify Hosts
@@ -151,30 +139,30 @@ hosts = {
   ]
 }
 # **Backup first**
-result = panel.modify_hosts(token=mytoken,data=hosts)
+result = panel.modify_hosts(data=hosts)
 print(result) #output: hosts
 ```
 ### Get Core Stats
 ```python
-result = panel.get_xray_core(token=mytoken)
+result = panel.get_xray_core()
 print(result)
  #output: {'version': '1.8.1', 'started': True, 'logs_websocket': '/api/core/logs'}
 ```
 ### Restart Core
 ```python
-result = panel.restart_xray_core(token=mytoken)
+result = panel.restart_xray_core()
 print(result)
  #output: success
 ```
 ### Get Core Config
 ```python
-result = panel.get_xray_config(token=mytoken)
+result = panel.get_xray_config()
 print(result) #output: your xray core config
 ```
 ### Modify Core Config
 ```python
 new_config={"your config"}
-result = panel.modify_xray_config(token=mytoken,config=new_config)
+result = panel.modify_xray_config(config=new_config)
 print(result) #output: success
 ```
 ### Add User
@@ -192,13 +180,13 @@ user = User(
     data_limit=0,
     data_limit_reset_strategy="no_reset",
 )
-result = panel.add_user(user=user, token=token) #return new User object
+result = panel.add_user(user=user) #return new User object
 
 print(result.username) #-> Mewhrzad, #user.proxies, #user.inbounds, #user.expire, #user.data_limit, #userdata_limit_reset_strategy, #user.status, #user.used_traffic, #user.lifetime_used_traffic, #user.created_at, #user.links, #user.subscription_url, #user.excluded_inbounds
 ```
 ### Get User
 ```python
-result = panel.get_user("Mewhrzad",token=mytoken) #return User object
+result = panel.get_user("Mewhrzad") #return User object
 print(result.subscription_url)
 ```
 ### Modify User
@@ -215,40 +203,40 @@ new_user = User(
     data_limit_reset_strategy="no_reset",
     status="active",
 )
-result = panel.modify_user("Mewhrzad", token=mytoken, user=new_user)
+result = panel.modify_user("Mewhrzad",  user=new_user)
 print(result.subscription_url) #output: modified user object
 ```
 ### Remove User
 ```python
-result = panel.delete_user("test", token=mytoken)
+result = panel.delete_user("test", )
 print(result) #output: success
 ```
 ### Reset User Data Usage
 ```python
-result = panel.reset_user_traffic("test", token=mytoken)
+result = panel.reset_user_traffic("test", )
 print(result) #output: success
 ```
 ### Reset All Users Data Usage
 ```python
-result = panel.reset_all_users_traffic(token=mytoken)
+result = panel.reset_all_users_traffic()
 print(result) #output: success
 ```
 ### Get All Users
 ```python
-result = panel.get_all_users(token=mytoken) #return list of users
+result = panel.get_all_users() #return list of users
 for user in result:
     print(user.username) 
 ```
 ### Get User Usage
 ```python
-result = panel.get_user_usage("mewhrzad",token=mytoken)
+result = panel.get_user_usage("mewhrzad")
 print(result) 
 #output: [{'node_id': None, 'node_name': 'MTN', 'used_traffic': 0}, 
 #{'node_id': 1, 'node_name': 'MCI', 'used_traffic': 0}]
 ```
 ### Get All User Templates
 ```python
-result = panel.get_all_templates(token=mytoken) #return template list object
+result = panel.get_all_templates() #return template list object
 for template in result:
     print(template.name)
 ```
@@ -264,13 +252,13 @@ temp = Template(
     username_prefix=None,
     username_suffix=None,
 )
-result = panel.add_template(token=mytoken, template=temp)  # return new Template object
+result = panel.add_template( template=temp)  # return new Template object
 print(result.name) #output: new_template
 ```
 ### Get User Template
 ```python
 template_id = 11
-result = panel.get_template_by_id(token=mytoken, id=template_id) # return Template object
+result = panel.get_template_by_id( id=template_id) # return Template object
 print(result.name) #output: new_template
 ```
 ### Modify User Template
@@ -286,12 +274,12 @@ temp = Template(
     username_suffix=None,
 )
 result = panel.modify_template_by_id(
-    id=1, token=mytoken, template=temp)  # return Modified Template object
+    id=1,  template=temp)  # return Modified Template object
 print(result.name) #output: new_template2
 ```
 ### Remove User Template
 ```python
-result = panel.delete_template_by_id(id=1, token=mytoken)
+result = panel.delete_template_by_id(id=1, )
 print(result) #output: success
 ```
 ### Add Node
@@ -310,12 +298,12 @@ my_node = Node(
     message="string",
 )
 
-result = panel.add_node(token=mytoken, node=my_node)  # return new Node object
+result = panel.add_node( node=my_node)  # return new Node object
 print(result.address)
 ```
 ### Get Node
 ```python
-result = panel.get_node_by_id(id=1, token=mytoken)  # return exist Node object
+result = panel.get_node_by_id(id=1, )  # return exist Node object
 print(result.address) #output: address of node 1
 ```
 ### Modify Node
@@ -334,28 +322,28 @@ my_node = Node(
     message="string",
 )
 
-result = panel.modify_node_by_id(id=1, token=mytoken,node=my_node)  # return modified Node object
+result = panel.modify_node_by_id(id=1, node=my_node)  # return modified Node object
 print(result.address) #output:test.example.com
 ```
 ### Remove Node
 ```python
-result = panel.delete_node(id=1, token=mytoken)
+result = panel.delete_node(id=1, )
 print(result) #output: success
 ```
 ### Get All Nodes
 ```python
-result = panel.get_all_nodes(token=mytoken)  # return List of Node object
+result = panel.get_all_nodes()  # return List of Node object
 for node in result:
     print(node.address)
 ```
 ### Reconenct Node
 ```python
-result = panel.reconnect_node(id=1,token=mytoken)
+result = panel.reconnect_node(id=1)
 print(result) #output: success
 ```
 ### Get Node Usage
 ```python
-result = panel.get_nodes_usage(token=mytoken)
+result = panel.get_nodes_usage()
 for node in result:
     print(node)
 #output:{'node_id': 1, 'node_name': 'N1', 'uplink': 1000000000000, 'downlink': 1000000000000}

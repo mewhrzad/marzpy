@@ -1,4 +1,5 @@
-import requests, json
+import requests
+import json
 
 
 def send_request(endpoint, token, method, data=None):

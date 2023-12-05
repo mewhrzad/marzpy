@@ -17,6 +17,7 @@ class User:
         links=[],
         subscription_url="",
         excluded_inbounds={},
+        **kwargs,
     ):
         self.username = username
         self.proxies = proxies
@@ -34,7 +35,7 @@ class User:
 
 
 class UserMethods:
-    def add_user(self, user: User, token: dict):
+    def add_user(self, user: User):
         """add new user.
 
         Parameters:
@@ -45,12 +46,12 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(
-            endpoint="user", token=token, method="post", data=user.__dict__
+            endpoint="user", token=self.token, method="post", data=user.__dict__
         )
 
         return User(**request)
 
-    def get_user(self, user_username: str, token: dict):
+    def get_user(self, user_username: str):
         """get exist user information by username.
 
         Parameters:
@@ -60,10 +61,10 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token=token, method="get")
+        request = send_request(f"user/{user_username}", token=self.token, method="get")
         return User(**request)
 
-    def modify_user(self, user_username: str, token: dict, user: object):
+    def modify_user(self, user_username: str, user: object):
         """edit exist user by username.
 
         Parameters:
@@ -75,10 +76,12 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token, "put", user.__dict__)
+        request = send_request(
+            f"user/{user_username}", self.token, "put", user.__dict__
+        )
         return User(**request)
 
-    def delete_user(self, user_username: str, token: dict):
+    def delete_user(self, user_username: str):
         """delete exist user by username.
 
         Parameters:
@@ -88,10 +91,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}", token, "delete")
+        send_request(f"user/{user_username}", self.token, "delete")
         return "success"
 
-    def reset_user_traffic(self, user_username: str, token: dict):
+    def reset_user_traffic(self, user_username: str):
         """reset exist user traffic by username.
 
         Parameters:
@@ -101,10 +104,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}/reset", token, "post")
+        send_request(f"user/{user_username}/reset", self.token, "post")
         return "success"
 
-    def get_all_users(self, token: dict):
+    def get_all_users(self):
         """get all users list.
 
         Parameters:
@@ -113,7 +116,7 @@ class UserMethods:
         Returns:
             `~list`: list of users
         """
-        request = send_request("users", token, "get")
+        request = send_request("users", self.token, "get")
         user_list = [
             User(
                 username="",
@@ -129,7 +132,7 @@ class UserMethods:
         del user_list[0]
         return user_list
 
-    def reset_all_users_traffic(self, token: dict):
+    def reset_all_users_traffic(self):
         """reset all users traffic.
 
         Parameters:
@@ -137,10 +140,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request("users/reset", token, "post")
+        send_request("users/reset", self.token, "post")
         return "success"
 
-    def get_user_usage(self, user_username: str, token: dict):
+    def get_user_usage(self, user_username: str):
         """get user usage by username.
 
         Parameters:
@@ -150,9 +153,9 @@ class UserMethods:
 
         Returns: `~dict`: dict of user usage
         """
-        return send_request(f"user/{user_username}/usage", token, "get")["usages"]
+        return send_request(f"user/{user_username}/usage", self.token, "get")["usages"]
 
-    def get_all_users_count(self, token: dict):
+    def get_all_users_count(self):
         """get all users count.
 
         Parameters:
