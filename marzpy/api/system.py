@@ -14,7 +14,7 @@ class System:
         Returns:
             `~dict`: server stats
         """
-        return send_request(endpoint="system", token=token, method="get")
+        return send_request(endpoint="system", token=token, method="get", proxy=self.proxy)
 
     def get_inbounds(self, token: dict):
         """get server inbounds.
@@ -25,7 +25,7 @@ class System:
         Returns:
             `~dict`: server inbounds
         """
-        return send_request(endpoint="inbounds", token=token, method="get")
+        return send_request(endpoint="inbounds", token=token, method="get", proxy=self.proxy)
 
     def get_hosts(self, token: dict):
         """get server hosts.
@@ -36,7 +36,7 @@ class System:
         Returns:
             `~dict`: server hosts
         """
-        return send_request(endpoint="hosts", token=token, method="get")
+        return send_request(endpoint="hosts", token=token, method="get", proxy=self.proxy)
 
     def modify_hosts(self, token: dict, data: dict):
         """get server hosts.
@@ -47,4 +47,4 @@ class System:
         Returns:
             `~dict`: server hosts
         """
-        return send_request(endpoint="hosts", token=token, method="put", data=data)
+        return send_request(endpoint="hosts", token=token, method="put", data=data, proxy=self.proxy)

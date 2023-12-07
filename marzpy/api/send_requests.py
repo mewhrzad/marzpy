@@ -1,7 +1,9 @@
-import requests, json
+import json
+
+import requests
 
 
-def send_request(endpoint, token, method, data=None):
+def send_request(endpoint, token, method, proxy=None, data=None):
     try:
         panel_address = token["panel_address"]
         token_type = token["token_type"]
@@ -12,7 +14,7 @@ def send_request(endpoint, token, method, data=None):
             "Authorization": f"{token_type} {access_token}",
         }
         response = requests.request(
-            method, request_address, headers=headers, data=json.dumps(data)
+            method, request_address, headers=headers, data=json.dumps(data), proxies=proxy
         )
         # print(response.content)
         response.raise_for_status()  # Raise an exception for non-200 status codes
