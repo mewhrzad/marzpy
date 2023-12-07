@@ -31,7 +31,8 @@ class TemplateMethods:
         Returns:
             `~list`: list of templates
         """
-        request = send_request(endpoint="user_template", token=token, method="get")
+        request = send_request(endpoint="user_template",
+                               token=token, method="get", proxy=self.proxy)
         template_list = [Template()]
         for user in request:
             template_list.append(Template(**user))
@@ -49,7 +50,7 @@ class TemplateMethods:
             `~object`: information of new template
         """
         request = send_request(
-            endpoint="user_template", token=token, method="post", data=template.__dict__
+            endpoint="user_template", token=token, method="post", data=template.__dict__, proxy=self.proxy
         )
         return Template(**request)
 
@@ -63,7 +64,7 @@ class TemplateMethods:
             `~object`: information of template
         """
         request = send_request(
-            endpoint=f"user_template/{id}", token=token, method="get"
+            endpoint=f"user_template/{id}", token=token, method="get", proxy=self.proxy
         )
 
         return Template(**request)
@@ -82,7 +83,7 @@ class TemplateMethods:
             endpoint=f"user_template/{id}",
             token=token,
             method="put",
-            data=template.__dict__,
+            data=template.__dict__, proxy=self.proxy
         )
         return Template(**request)
 
@@ -95,5 +96,6 @@ class TemplateMethods:
         Returns:
             `~str`: success
         """
-        send_request(endpoint=f"user_template/{id}", token=token, method="delete")
+        send_request(
+            endpoint=f"user_template/{id}", token=token, method="delete", proxy=self.proxy)
         return "success"

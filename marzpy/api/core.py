@@ -14,7 +14,7 @@ class Core:
         Returns:
             `~dict`: xray core
         """
-        return send_request(endpoint="core", token=token, method="get")
+        return send_request(endpoint="core", token=token, method="get", proxy=self.proxy)
 
     def restart_xray_core(self, token: dict):
         """restart xray core.
@@ -25,7 +25,8 @@ class Core:
         Returns:
             `~str`: success
         """
-        send_request(endpoint="core/restart", token=token, method="post")
+        send_request(endpoint="core/restart", token=token,
+                     method="post", proxy=self.proxy)
         return "success"
 
     def get_xray_config(self, token: dict):
@@ -37,7 +38,7 @@ class Core:
         Returns:
             `~dict`: xray config
         """
-        return send_request(endpoint="core/config", token=token, method="get")
+        return send_request(endpoint="core/config", token=token, method="get", proxy=self.proxy)
 
     def modify_xray_config(self, token: dict, config: json):
         """edit xray config.
@@ -49,5 +50,6 @@ class Core:
         Returns:
             `~str`: success
         """
-        send_request(endpoint="core/config", token=token, method="put", data=config)
+        send_request(endpoint="core/config", token=token,
+                     method="put", data=config, proxy=self.proxy)
         return "success"

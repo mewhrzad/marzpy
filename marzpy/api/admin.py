@@ -2,10 +2,11 @@ from .send_requests import *
 
 
 class Admin:
-    def __init__(self, username: str, password: str, panel_address: str):
+    def __init__(self, username: str, password: str, panel_address: str, proxy: dict | None = None):
         self.username = username
         self.password = password
         self.panel_address = panel_address
+        self.proxy = proxy
 
     def get_token(self):
         """login for Authorization token
@@ -23,6 +24,7 @@ class Admin:
                     "Accept": "application/json",
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
+                proxies=self.proxy
             )
             response.raise_for_status()  # Raise an exception for non-200 status codes
             result = json.loads(response.content)
@@ -44,7 +46,7 @@ class Admin:
         Returns:
         `~dict`: {"username": "str" , "is_sudo": true}
         """
-        return send_request(endpoint="admin", token=token, method="get")
+        return send_request(endpoint="admin", token=token, method="get", proxy=self.proxy)
 
     def create_admin(self, token: dict, data: dict):
         """add new admin.
@@ -56,7 +58,8 @@ class Admin:
         Returns:
         `~dict`: username && is_sudo
         """
-        send_request(endpoint="admin", token=token, method="post", data=data)
+        send_request(endpoint="admin", token=token,
+                     method="post", proxy=self.proxy, data=data)
         return "success"
 
     def change_admin_password(self, username: str, token: dict, data: dict):
@@ -76,6 +79,7 @@ class Admin:
             endpoint=f"admin/{username}",
             token=token,
             method="put",
+            proxy=self.proxy,
             data=data,
         )
         return "success"
@@ -90,7 +94,8 @@ class Admin:
         Returns:
         `~str`: success
         """
-        send_request(endpoint=f"admin/{username}", token=token, method="delete")
+        send_request(endpoint=f"admin/{username}",
+                     token=token, method="delete", proxy=self.proxy)
         return "success"
 
     def get_all_admins(self, token: dict):
@@ -102,4 +107,4 @@ class Admin:
         Returns:
         `~list`: [{username && is_sudo}]
         """
-        return send_request(endpoint=f"admins", token=token, method="get")
+        return send_request(endpoint=f"admins", token=token, method="get", proxy=self.proxy)

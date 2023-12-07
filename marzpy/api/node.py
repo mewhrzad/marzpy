@@ -42,7 +42,7 @@ class NodeMethods:
         """
         return Node(
             **send_request(
-                endpoint="node", token=token, method="post", data=node.__dict__
+                endpoint="node", token=token, method="post", proxy=self.proxy, data=node.__dict__
             )
         )
 
@@ -57,7 +57,7 @@ class NodeMethods:
         Returns:
             `~object`: information of new node
         """
-        return Node(**send_request(endpoint=f"node/{id}", token=token, method="get"))
+        return Node(**send_request(endpoint=f"node/{id}", token=token, method="get", proxy=self.proxy))
 
     def modify_node_by_id(self, id: int, token: dict, node: object):
         """edit exist node from id.
@@ -73,7 +73,7 @@ class NodeMethods:
             `~object`: information of new node
         """
         request = send_request(
-            endpoint=f"node/{id}", token=token, method="put", data=node.__dict__
+            endpoint=f"node/{id}", token=token, method="put", data=node.__dict__, proxy=self.proxy
         )
         return Node(**request)
 
@@ -88,7 +88,8 @@ class NodeMethods:
         Returns:
             `~str`: success
         """
-        send_request(endpoint=f"node/{id}", token=token, method="delete")
+        send_request(endpoint=f"node/{id}", token=token,
+                     method="delete", proxy=self.proxy)
         return "success"
 
     def get_all_nodes(self, token: dict):
@@ -100,7 +101,8 @@ class NodeMethods:
         Returns:
             `~list of objects`: [Node]
         """
-        request = send_request(endpoint="nodes", token=token, method="get")
+        request = send_request(endpoint="nodes", token=token,
+                               method="get", proxy=self.proxy)
         node_list = [Node()]
         for node in request:
             node_list.append(Node(**node))
@@ -119,7 +121,7 @@ class NodeMethods:
             `~str`: success
         """
         request = send_request(
-            endpoint=f"node/{id}/reconnect", token=token, method="post"
+            endpoint=f"node/{id}/reconnect", token=token, method="post", proxy=self.proxy
         )
 
         return "success"
@@ -133,5 +135,6 @@ class NodeMethods:
         Returns:
             `~dict`: "usage" : []
         """
-        request = send_request(endpoint="nodes/usage", token=token, method="get")
+        request = send_request(endpoint="nodes/usage",
+                               token=token, method="get", proxy=self.proxy)
         return request["usages"]

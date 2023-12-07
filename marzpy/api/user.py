@@ -45,7 +45,7 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(
-            endpoint="user", token=token, method="post", data=user.__dict__
+            endpoint="user", token=token, method="post", data=user.__dict__, proxy=self.proxy
         )
 
         return User(**request)
@@ -60,7 +60,8 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token=token, method="get")
+        request = send_request(
+            f"user/{user_username}", token=token, method="get", proxy=self.proxy)
         return User(**request)
 
     def modify_user(self, user_username: str, token: dict, user: object):
@@ -75,7 +76,8 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token, "put", user.__dict__)
+        request = send_request(
+            f"user/{user_username}", token, "put", user.__dict__, proxy=self.proxy)
         return User(**request)
 
     def delete_user(self, user_username: str, token: dict):
@@ -88,7 +90,8 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}", token, "delete")
+        send_request(f"user/{user_username}", token,
+                     "delete", proxy=self.proxy)
         return "success"
 
     def reset_user_traffic(self, user_username: str, token: dict):
@@ -101,7 +104,8 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}/reset", token, "post")
+        send_request(f"user/{user_username}/reset",
+                     token, "post", proxy=self.proxy)
         return "success"
 
     def get_all_users(self, token: dict):
@@ -113,7 +117,7 @@ class UserMethods:
         Returns:
             `~list`: list of users
         """
-        request = send_request("users", token, "get")
+        request = send_request("users", token, "get", proxy=self.proxy)
         user_list = [
             User(
                 username="",
@@ -137,7 +141,7 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request("users/reset", token, "post")
+        send_request("users/reset", token, "post", proxy=self.proxy)
         return "success"
 
     def get_user_usage(self, user_username: str, token: dict):
