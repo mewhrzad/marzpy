@@ -110,7 +110,21 @@ class UserMethods:
         """
         send_request(f"user/{user_username}/reset", token, "post")
         return "success"
+    
+    def revoke_sub(self, user_username: str, token: dict):
+        """Revoke users subscription (Subscription link and proxies) traffic by username.
 
+        Parameters:
+            user_username (``str``) : username of user
+
+            token (``dict``) : Authorization token
+
+        Returns: `~str`: success
+        """
+        request = send_request(f"user/{user_username}/revoke_sub", token, "post")
+        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
+        return User(**request)
+    
     def get_all_users(self, token: dict, username=None, status=None):
         """get all users list.
 
