@@ -10,17 +10,23 @@ class User:
         self,
         username: str,
         proxies: dict,
-        inbounds: dict,
-        expire: float,
+        inbounds: dict,  
         data_limit: float,
-        data_limit_reset_strategy: str,
+        data_limit_reset_strategy: str = "no_reset",
         status="",
+        expire: float = 0,
         used_traffic=0,
         lifetime_used_traffic=0,
         created_at="",
         links=[],
         subscription_url="",
         excluded_inbounds={},
+        note = "",
+        on_hold_timeout= 0,
+        on_hold_expire_duration = 0,
+        sub_updated_at = 0,
+        online_at = 0,
+        sub_last_user_agent:str = ""
     ):
         self.username = username
         self.proxies = proxies
@@ -35,8 +41,12 @@ class User:
         self.links = links
         self.subscription_url = subscription_url
         self.excluded_inbounds = excluded_inbounds
-
-
+        self.note = note
+        self.on_hold_timeout = on_hold_timeout
+        self.on_hold_expire_duration = on_hold_expire_duration
+        self.sub_last_user_agent = sub_last_user_agent
+        self.online_at = online_at
+        self.sub_updated_at = sub_updated_at
 class UserMethods:
     def add_user(self, user: User, token: dict):
         """add new user.
@@ -49,10 +59,11 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         user.status = "active"
+        if user.on_hold_expire_duration:
+            user.status = "on_hold"
         request = send_request(
             endpoint="user", token=token, method="post", data=user.__dict__
         )
-        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def get_user(self, user_username: str, token: dict):
@@ -66,7 +77,6 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(f"user/{user_username}", token=token, method="get")
-        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def modify_user(self, user_username: str, token: dict, user: object):
@@ -82,7 +92,6 @@ class UserMethods:
         Returns: `~User`: api.User object
         """
         request = send_request(f"user/{user_username}", token, "put", user.__dict__)
-        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
 
     def delete_user(self, user_username: str, token: dict):
@@ -122,7 +131,6 @@ class UserMethods:
         Returns: `~str`: success
         """
         request = send_request(f"user/{user_username}/revoke_sub", token, "post")
-        request = delete_if_exist(request,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
         return User(**request)
     
     def get_all_users(self, token: dict, username=None, status=None):
@@ -154,7 +162,6 @@ class UserMethods:
             )
         ]
         for user in request["users"]:
-            user = delete_if_exist(user,["note","sub_last_user_agent","online_at","on_hold_expire_duration","sub_updated_at","on_hold_timeout"])
             user_list.append(User(**user))
         del user_list[0]
         return user_list
