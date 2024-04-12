@@ -12,6 +12,6 @@ setup(
     url="https://github.com/Mewhrzad/marzpy",
     keywords=["marzpy", "Marzban", "Gozargah", "Marzban python", "Marzban API"],
     packages=find_packages(),
-    ins=["requests"],
+    ins=["aiohttp"],
     classifiers=["Programming Language :: Python :: 3"],
 )
