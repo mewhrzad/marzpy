@@ -1,10 +1,11 @@
 from .send_requests import *
 
-def delete_if_exist(dic,keys:list):
+async def delete_if_exist(dic,keys:list):
     for key in keys:
         if key in dic:
             del dic[key]
     return dic
+
 class User:
     def __init__(
         self,
@@ -48,7 +49,7 @@ class User:
         self.online_at = online_at
         self.sub_updated_at = sub_updated_at
 class UserMethods:
-    def add_user(self, user: User, token: dict):
+    async def add_user(self, user: User, token: dict):
         """add new user.
 
         Parameters:
@@ -61,12 +62,12 @@ class UserMethods:
         user.status = "active"
         if user.on_hold_expire_duration:
             user.status = "on_hold"
-        request = send_request(
+        request = await send_request(
             endpoint="user", token=token, method="post", data=user.__dict__
         )
         return User(**request)
 
-    def get_user(self, user_username: str, token: dict):
+    async def get_user(self, user_username: str, token: dict):
         """get exist user information by username.
 
         Parameters:
@@ -76,10 +77,10 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token=token, method="get")
+        request = await send_request(f"user/{user_username}", token=token, method="get")
         return User(**request)
 
-    def modify_user(self, user_username: str, token: dict, user: object):
+    async def modify_user(self, user_username: str, token: dict, user: object):
         """edit exist user by username.
 
         Parameters:
@@ -91,10 +92,10 @@ class UserMethods:
 
         Returns: `~User`: api.User object
         """
-        request = send_request(f"user/{user_username}", token, "put", user.__dict__)
+        request = await send_request(f"user/{user_username}", token, "put", user.__dict__)
         return User(**request)
 
-    def delete_user(self, user_username: str, token: dict):
+    async def delete_user(self, user_username: str, token: dict):
         """delete exist user by username.
 
         Parameters:
@@ -104,10 +105,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}", token, "delete")
+        await send_request(f"user/{user_username}", token, "delete")
         return "success"
 
-    def reset_user_traffic(self, user_username: str, token: dict):
+    async def reset_user_traffic(self, user_username: str, token: dict):
         """reset exist user traffic by username.
 
         Parameters:
@@ -117,10 +118,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request(f"user/{user_username}/reset", token, "post")
+        await send_request(f"user/{user_username}/reset", token, "post")
         return "success"
     
-    def revoke_sub(self, user_username: str, token: dict):
+    async def revoke_sub(self, user_username: str, token: dict):
         """Revoke users subscription (Subscription link and proxies) traffic by username.
 
         Parameters:
@@ -130,10 +131,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        request = send_request(f"user/{user_username}/revoke_sub", token, "post")
+        request = await send_request(f"user/{user_username}/revoke_sub", token, "post")
         return User(**request)
     
-    def get_all_users(self, token: dict, username=None, status=None):
+    async def get_all_users(self, token: dict, username=None, status=None):
         """get all users list.
 
         Parameters:
@@ -150,7 +151,7 @@ class UserMethods:
                 endpoint += f"&status={status}"
             else:
                 endpoint += f"?status={status}"
-        request = send_request(endpoint, token, "get")
+        request = await send_request(endpoint, token, "get")
         user_list = [
             User(
                 username="",
@@ -166,7 +167,7 @@ class UserMethods:
         del user_list[0]
         return user_list
 
-    def reset_all_users_traffic(self, token: dict):
+    async def reset_all_users_traffic(self, token: dict):
         """reset all users traffic.
 
         Parameters:
@@ -174,10 +175,10 @@ class UserMethods:
 
         Returns: `~str`: success
         """
-        send_request("users/reset", token, "post")
+        await send_request("users/reset", token, "post")
         return "success"
 
-    def get_user_usage(self, user_username: str, token: dict):
+    async def get_user_usage(self, user_username: str, token: dict):
         """get user usage by username.
 
         Parameters:
@@ -187,9 +188,9 @@ class UserMethods:
 
         Returns: `~dict`: dict of user usage
         """
-        return send_request(f"user/{user_username}/usage", token, "get")["usages"]
+        return await end_request(f"user/{user_username}/usage", token, "get")["usages"]
 
-    def get_all_users_count(self, token: dict):
+    async def get_all_users_count(self, token: dict):
         """get all users count.
 
         Parameters:
@@ -197,5 +198,4 @@ class UserMethods:
 
         Returns: `~int`: count of users
         """
-        return self.get_all_users(token)["content"]["total"]
-
+        return await self.get_all_users(token)["content"]["total"]

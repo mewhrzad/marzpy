@@ -5,7 +5,7 @@ class Core:
     def __init__(self) -> None:
         pass
 
-    def get_xray_core(self, token: dict):
+    async def get_xray_core(self, token: dict):
         """get xray core.
 
         Parameters:
@@ -14,9 +14,9 @@ class Core:
         Returns:
             `~dict`: xray core
         """
-        return send_request(endpoint="core", token=token, method="get")
+        return await send_request(endpoint="core", token=token, method="get")
 
-    def restart_xray_core(self, token: dict):
+    async def restart_xray_core(self, token: dict):
         """restart xray core.
 
         Parameters:
@@ -25,10 +25,10 @@ class Core:
         Returns:
             `~str`: success
         """
-        send_request(endpoint="core/restart", token=token, method="post")
+        await send_request(endpoint="core/restart", token=token, method="post")
         return "success"
 
-    def get_xray_config(self, token: dict):
+    async def get_xray_config(self, token: dict):
         """get xray config.
 
         Parameters:
@@ -37,9 +37,9 @@ class Core:
         Returns:
             `~dict`: xray config
         """
-        return send_request(endpoint="core/config", token=token, method="get")
+        return await send_request(endpoint="core/config", token=token, method="get")
 
-    def modify_xray_config(self, token: dict, config: json):
+    async def modify_xray_config(self, token: dict, config: json):
         """edit xray config.
 
         Parameters:
@@ -49,5 +49,5 @@ class Core:
         Returns:
             `~str`: success
         """
-        send_request(endpoint="core/config", token=token, method="put", data=config)
+        await send_request(endpoint="core/config", token=token, method="put", data=config)
         return "success"

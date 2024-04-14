@@ -29,7 +29,7 @@ class NodeMethods:
     def __init__(self) -> None:
         pass
 
-    def add_node(self, token: dict, node: Node):
+    async def add_node(self, token: dict, node: Node):
         """add new node.
 
         Parameters:
@@ -41,12 +41,12 @@ class NodeMethods:
             `~object`: information of new node
         """
         return Node(
-            **send_request(
+            **await send_request(
                 endpoint="node", token=token, method="post", data=node.__dict__
             )
         )
 
-    def get_node_by_id(self, id: int, token: dict):
+    async def get_node_by_id(self, id: int, token: dict):
         """get exist node from id.
 
         Parameters:
@@ -57,9 +57,9 @@ class NodeMethods:
         Returns:
             `~object`: information of new node
         """
-        return Node(**send_request(endpoint=f"node/{id}", token=token, method="get"))
+        return Node(**await send_request(endpoint=f"node/{id}", token=token, method="get"))
 
-    def modify_node_by_id(self, id: int, token: dict, node: object):
+    async def modify_node_by_id(self, id: int, token: dict, node: object):
         """edit exist node from id.
 
         Parameters:
@@ -72,12 +72,12 @@ class NodeMethods:
         Returns:
             `~object`: information of new node
         """
-        request = send_request(
+        request = await send_request(
             endpoint=f"node/{id}", token=token, method="put", data=node.__dict__
         )
         return Node(**request)
 
-    def delete_node(self, id: int, token: dict):
+    async def delete_node(self, id: int, token: dict):
         """delete node from id.
 
         Parameters:
@@ -88,10 +88,10 @@ class NodeMethods:
         Returns:
             `~str`: success
         """
-        send_request(endpoint=f"node/{id}", token=token, method="delete")
+        await send_request(endpoint=f"node/{id}", token=token, method="delete")
         return "success"
 
-    def get_all_nodes(self, token: dict):
+    async def get_all_nodes(self, token: dict):
         """get all nodes.
 
         Parameters:
@@ -100,14 +100,14 @@ class NodeMethods:
         Returns:
             `~list of objects`: [Node]
         """
-        request = send_request(endpoint="nodes", token=token, method="get")
+        request = await send_request(endpoint="nodes", token=token, method="get")
         node_list = [Node()]
         for node in request:
             node_list.append(Node(**node))
         del node_list[0]
         return node_list
 
-    def reconnect_node(self, id: int, token: dict):
+    async def reconnect_node(self, id: int, token: dict):
         """reconnect from id.
 
         Parameters:
@@ -118,13 +118,13 @@ class NodeMethods:
         Returns:
             `~str`: success
         """
-        request = send_request(
+        request = await send_request(
             endpoint=f"node/{id}/reconnect", token=token, method="post"
         )
 
         return "success"
 
-    def get_nodes_usage(self, token: dict):
+    async def get_nodes_usage(self, token: dict):
         """get all nodes usage.
 
         Parameters:
@@ -133,5 +133,5 @@ class NodeMethods:
         Returns:
             `~dict`: "usage" : []
         """
-        request = send_request(endpoint="nodes/usage", token=token, method="get")
+        request = await send_request(endpoint="nodes/usage", token=token, method="get")
         return request["usages"]
