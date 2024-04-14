@@ -14,8 +14,8 @@ import asyncio
         
 async def main():
     panel = Marzban("username","password","https://example.com")
-    token = await await panel.get_token()
-    #await await panel.anyfunction(token)
+    token = await panel.get_token()
+    #await panel.anyfunction(token)
 
 asyncio.run(main())
 
