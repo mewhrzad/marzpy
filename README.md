@@ -4,7 +4,7 @@ A Python library that helps you easily use [Marzban](https://github.com/Gozargah
 >**Status:** Working on new update 🔥
 ## installation
 ```shell
-pip install marzpy
+pip install marzpy --upgrade
 ```
 requirements : ```aiohttp```
 # How To Use
@@ -195,6 +195,7 @@ user = User(
     expire=0,
     data_limit=0,
     data_limit_reset_strategy="no_reset",
+    status="active"
 )
 result = await panel.add_user(user=user, token=token) #return new User object
 
