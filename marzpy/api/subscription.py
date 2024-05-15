@@ -12,10 +12,10 @@ class Subscription:
                 url = f"{sub_link}/{endpoint}",
                 headers={"Accept": "application/json"}
                 ) as response :
-                await response.raise_for_status()  # Raise an exception for non-200 status codes
-                result = await response.content
+                #await response.raise_for_status()  # Raise an exception for non-200 status codes
+                result = await response.text()
             if endpoint:
-                return await response.json
+                return await response.json()
             else:
                 return base64.b64decode(result).decode("utf-8")
         except aiohttp.exceptions.RequestException as ex:
