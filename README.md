@@ -79,7 +79,7 @@ asyncio.run(main())
 ## Thanks To
 
 - [ErfanTech](https://github.com/ErfanTech) :laughing:
-- [HadiH2o](https://github.com/HadiH2o) :crying:
+- [HadiH2o](https://github.com/HadiH2o) 😭
 
 # Examples
 
