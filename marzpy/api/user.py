@@ -1,33 +1,35 @@
 from .send_requests import *
 
-async def delete_if_exist(dic,keys:list):
+
+async def delete_if_exist(dic, keys: list):
     for key in keys:
         if key in dic:
             del dic[key]
     return dic
 
+
 class User:
     def __init__(
-        self,
-        username: str,
-        proxies: dict,
-        inbounds: dict,  
-        data_limit: float,
-        data_limit_reset_strategy: str = "no_reset",
-        status="",
-        expire: float = 0,
-        used_traffic=0,
-        lifetime_used_traffic=0,
-        created_at="",
-        links=[],
-        subscription_url="",
-        excluded_inbounds={},
-        note = "",
-        on_hold_timeout= 0,
-        on_hold_expire_duration = 0,
-        sub_updated_at = 0,
-        online_at = 0,
-        sub_last_user_agent:str = ""
+            self,
+            username: str,
+            proxies: dict,
+            inbounds: dict,
+            data_limit: float,
+            data_limit_reset_strategy: str = "no_reset",
+            status="",
+            expire: float = 0,
+            used_traffic=0,
+            lifetime_used_traffic=0,
+            created_at="",
+            links=[],
+            subscription_url="",
+            excluded_inbounds={},
+            note="",
+            on_hold_timeout=0,
+            on_hold_expire_duration=0,
+            sub_updated_at=0,
+            online_at=0,
+            sub_last_user_agent: str = ""
     ):
         self.username = username
         self.proxies = proxies
@@ -48,14 +50,17 @@ class User:
         self.sub_last_user_agent = sub_last_user_agent
         self.online_at = online_at
         self.sub_updated_at = sub_updated_at
+
+
 class UserMethods:
-    async def add_user(self, user: User, token: dict):
+    async def add_user(self, token: dict, user: User):
         """add new user.
 
         Parameters:
+            token (``dict``) : Authorization token
+
             user (``api.User``) : User Object
 
-            token (``dict``) : Authorization token
 
         Returns: `~User`: api.User object
         """
@@ -67,7 +72,7 @@ class UserMethods:
         )
         return User(**request)
 
-    async def get_user(self, user_username: str, token: dict):
+    async def get_user(self, token: dict, user_username: str):
         """get exist user information by username.
 
         Parameters:
@@ -80,7 +85,7 @@ class UserMethods:
         request = await send_request(f"user/{user_username}", token=token, method="get")
         return User(**request)
 
-    async def modify_user(self, user_username: str, token: dict, user: object):
+    async def modify_user(self, token: dict, user_username: str, user: object):
         """edit exist user by username.
 
         Parameters:
@@ -95,7 +100,7 @@ class UserMethods:
         request = await send_request(f"user/{user_username}", token, "put", user.__dict__)
         return User(**request)
 
-    async def delete_user(self, user_username: str, token: dict):
+    async def delete_user(self, token: dict, user_username: str):
         """delete exist user by username.
 
         Parameters:
@@ -108,7 +113,7 @@ class UserMethods:
         await send_request(f"user/{user_username}", token, "delete")
         return "success"
 
-    async def reset_user_traffic(self, user_username: str, token: dict):
+    async def reset_user_traffic(self, token: dict, user_username: str):
         """reset exist user traffic by username.
 
         Parameters:
@@ -120,8 +125,8 @@ class UserMethods:
         """
         await send_request(f"user/{user_username}/reset", token, "post")
         return "success"
-    
-    async def revoke_sub(self, user_username: str, token: dict):
+
+    async def revoke_sub(self, token: dict, user_username: str):
         """Revoke users subscription (Subscription link and proxies) traffic by username.
 
         Parameters:
@@ -133,7 +138,7 @@ class UserMethods:
         """
         request = await send_request(f"user/{user_username}/revoke_sub", token, "post")
         return User(**request)
-    
+
     async def get_all_users(self, token: dict, username=None, status=None):
         """get all users list.
 
@@ -178,7 +183,7 @@ class UserMethods:
         await send_request("users/reset", token, "post")
         return "success"
 
-    async def get_user_usage(self, user_username: str, token: dict):
+    async def get_user_usage(self, token: dict, user_username: str):
         """get user usage by username.
 
         Parameters:
@@ -188,7 +193,7 @@ class UserMethods:
 
         Returns: `~dict`: dict of user usage
         """
-        return await end_request(f"user/{user_username}/usage", token, "get")["usages"]
+        return await send_request(f"user/{user_username}/usage", token, "get")["usages"]
 
     async def get_all_users_count(self, token: dict):
         """get all users count.
@@ -198,4 +203,5 @@ class UserMethods:
 
         Returns: `~int`: count of users
         """
-        return await self.get_all_users(token)["content"]["total"]
+
+        return len(await self.get_all_users(token))
