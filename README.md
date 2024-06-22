@@ -69,10 +69,11 @@ asyncio.run(main())
 # Contributors
 ## Thanks To 
 - [ErfanTech](https://github.com/ErfanTech) :laughing:
-
+```html
 <a href="https://github.com/mewhrzad/marzpy/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=mewhrzad/marzpy" />
+  <img src="https://contrib.rocks/image?repo=mewhrzad/marzpy"/>
 </a>
+```
 # Examples
 ### Get Token
 ```python
