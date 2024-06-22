@@ -66,6 +66,9 @@ asyncio.run(main())
     - [reconenct node](#reconenct-node)
     - [get all nodes usage](#get-node-usage)
 
+## Thanks To 
+- [ErfanTech](https://github.com/ErfanTech) :laughing:
+
 # Contributors
 <a href="https://github.com/mewhrzad/marzpy/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=mewhrzad/marzpy"/>
