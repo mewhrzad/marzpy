@@ -1,7 +1,16 @@
 from .send_requests import *
-import aiohttp,json
+
 
 class Admin:
+    def __init__(self, username: str, is_sudo: bool, password: str, telegram_id: int = None, discord_webhook: str = None, ):
+        self.username = username
+        self.is_sudo = is_sudo
+        self.password = password
+        self.telegram_id = telegram_id
+        self.discord_webhook = discord_webhook
+
+
+class AdminMethods:
     def __init__(self, username: str, password: str, panel_address: str):
         self.username = username
         self.password = password
@@ -14,10 +23,10 @@ class Admin:
         """
         try:
             async with aiohttp.request(
-                "post",
-                url = f"{self.panel_address}/api/admin/token",
-                data = {"username": self.username, "password": self.password},
-                ) as response :
+                    "post",
+                    url=f"{self.panel_address}/api/admin/token",
+                    data={"username": self.username, "password": self.password},
+            ) as response:
                 # response.raise_for_status()  # Raise an exception for non-200 status codes
                 result = await response.json()
                 result["panel_address"] = self.panel_address
@@ -40,41 +49,43 @@ class Admin:
         """
         return await send_request(endpoint="admin", token=token, method="get")
 
-    async def create_admin(self, token: dict, data: dict):
+    async def create_admin(self, token: dict, admin: Admin):
         """add new admin.
 
         Parameters:
             token (``dict``) : Authorization token
-            data (``dict``) : information of new admin
+            admin (``Admin``) : information of new admin
 
         Returns:
         `~dict`: username && is_sudo
         """
-        await send_request(endpoint="admin", token=token, method="post", data=data)
+        await send_request(endpoint="admin", token=token, method="post", data=admin.__dict__)
         return "success"
 
-    async def change_admin_password(self, username: str, token: dict, data: dict):
+    async def modify_admin(self, token: dict, username: str, admin: Admin):
         """change exist admins password.
 
         *you cant modify sudo admins password*
 
         Parameters:
-            username (``str``) : username of admin
             token (``dict``) : Authorization token
-            data (``dict``) : information of new admin
+            username (``str``) : username of admin
+            admin (``Admin``) : information of new admin
 
         Returns:
         `~dict`: username && is_sudo
         """
+        admin_dict = admin.__dict__
+        admin_dict.pop('username')
         await send_request(
             endpoint=f"admin/{username}",
             token=token,
             method="put",
-            data=data,
+            data=admin_dict,
         )
         return "success"
 
-    async def delete_admin(self, username: str, token: dict):
+    async def delete_admin(self, token: dict, username: str):
         """delete admin.
 
         Parameters:

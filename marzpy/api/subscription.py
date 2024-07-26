@@ -1,4 +1,6 @@
-import aiohttp, json, base64
+import base64
+
+import aiohttp
 
 
 class Subscription:
@@ -8,10 +10,10 @@ class Subscription:
     async def subsend_request(sub_link: str, endpoint: str):
         try:
             async with aiohttp.request(
-                method="get",
-                url = f"{sub_link}/{endpoint}",
-                headers={"Accept": "application/json"}
-                ) as response :
+                    method="get",
+                    url=f"{sub_link}/{endpoint}",
+                    headers={"Accept": "application/json"}
+            ) as response:
                 await response.raise_for_status()  # Raise an exception for non-200 status codes
                 result = await response.content
             if endpoint:

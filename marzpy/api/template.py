@@ -3,14 +3,14 @@ from .send_requests import *
 
 class Template:
     def __init__(
-        self,
-        name="",
-        inbounds={},
-        data_limit={},
-        expire_duration=0,
-        username_prefix="",
-        username_suffix="",
-        id=None,
+            self,
+            name="",
+            inbounds={},
+            data_limit={},
+            expire_duration=0,
+            username_prefix="",
+            username_suffix="",
+            id=None,
     ):
         self.name = name
         self.inbounds = inbounds
@@ -38,7 +38,7 @@ class TemplateMethods:
         del template_list[0]
         return template_list
 
-    async def add_template(self, template: Template, token: dict):
+    async def add_template(self, token: dict, template: Template):
         """add new template.
 
         Parameters:
@@ -53,12 +53,12 @@ class TemplateMethods:
         )
         return Template(**request)
 
-    async def get_template_by_id(self, id: int, token: dict):
+    async def get_template_by_id(self, token: dict, id: int):
         """get exist template from id.
 
         Parameters:
-            id (``id``) : template id
             token (``dict``) : Authorization token
+            id (``id``) : template id
         Returns:
             `~object`: information of template
         """
@@ -68,12 +68,12 @@ class TemplateMethods:
 
         return Template(**request)
 
-    async def modify_template_by_id(self, id: int, token: dict, template: Template):
+    async def modify_template_by_id(self, token: dict, id: int, template: Template):
         """edit exist template from id.
 
         Parameters:
-            id (``id``) : template id
             token (``dict``) : Authorization token
+            id (``id``) : template id
             template (``object``) template
         Returns:
             `~object`: information of edited template
@@ -86,7 +86,7 @@ class TemplateMethods:
         )
         return Template(**request)
 
-    async def delete_template_by_id(self, id: int, token: dict):
+    async def delete_template_by_id(self, token: dict, id: int):
         """delete template from id.
 
         Parameters:

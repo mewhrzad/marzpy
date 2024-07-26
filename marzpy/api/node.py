@@ -3,16 +3,17 @@ from .send_requests import *
 
 class Node:
     def __init__(
-        self,
-        name="",
-        address="",
-        port=0,
-        api_port=0,
-        certificate="",
-        id=0,
-        xray_version="",
-        status="",
-        message="",
+            self,
+            name="",
+            address="",
+            port=0,
+            api_port=0,
+            certificate="",
+            id=0,
+            xray_version="",
+            status="",
+            message="",
+            usage_coefficient=1,
     ):
         self.name = name
         self.address = address
@@ -23,6 +24,7 @@ class Node:
         self.xray_version = xray_version
         self.status = status
         self.message = message
+        self.usage_coefficient = usage_coefficient
 
 
 class NodeMethods:
@@ -46,7 +48,7 @@ class NodeMethods:
             )
         )
 
-    async def get_node_by_id(self, id: int, token: dict):
+    async def get_node_by_id(self, token: dict, id: int):
         """get exist node from id.
 
         Parameters:
@@ -59,7 +61,7 @@ class NodeMethods:
         """
         return Node(**await send_request(endpoint=f"node/{id}", token=token, method="get"))
 
-    async def modify_node_by_id(self, id: int, token: dict, node: object):
+    async def modify_node_by_id(self, token: dict, id: int, node: object):
         """edit exist node from id.
 
         Parameters:
@@ -77,7 +79,7 @@ class NodeMethods:
         )
         return Node(**request)
 
-    async def delete_node(self, id: int, token: dict):
+    async def delete_node(self, token: dict, id: int):
         """delete node from id.
 
         Parameters:
@@ -107,7 +109,7 @@ class NodeMethods:
         del node_list[0]
         return node_list
 
-    async def reconnect_node(self, id: int, token: dict):
+    async def reconnect_node(self, token: dict, id: int):
         """reconnect from id.
 
         Parameters:
@@ -135,3 +137,16 @@ class NodeMethods:
         """
         request = await send_request(endpoint="nodes/usage", token=token, method="get")
         return request["usages"]
+
+    async def get_nodes_certificate(self, token: dict):
+        """get nodes settings (certificate).
+
+        Parameters:
+            token (``dict``): Authorization token
+
+        Returns:
+            `~str`: 'certificate'
+        """
+
+        request = await send_request(endpoint="node/settings", token=token, method="get")
+        return request["certificate"]
