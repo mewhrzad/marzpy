@@ -27,7 +27,10 @@ class User:
         on_hold_expire_duration = 0,
         sub_updated_at = 0,
         online_at = 0,
-        sub_last_user_agent:str = ""
+        sub_last_user_agent:str = "",
+        auto_delete_in_days:int = 0,
+        **_, # Stop causing error when marzban update
+        
     ):
         self.username = username
         self.proxies = proxies
@@ -48,6 +51,8 @@ class User:
         self.sub_last_user_agent = sub_last_user_agent
         self.online_at = online_at
         self.sub_updated_at = sub_updated_at
+        self.auto_delete_in_days = auto_delete_in_days
+
 class UserMethods:
     async def add_user(self, user: User, token: dict):
         """add new user.
