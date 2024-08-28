@@ -193,7 +193,7 @@ class UserMethods:
 
         Returns: `~dict`: dict of user usage
         """
-        return await send_request(f"user/{user_username}/usage", token, "get")["usages"]
+        return await send_request(f"user/{user_username}/usage", token, "get")
 
     async def get_all_users_count(self, token: dict):
         """get all users count.
