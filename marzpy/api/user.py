@@ -203,4 +203,4 @@ class UserMethods:
 
         Returns: `~int`: count of users
         """
-        return await self.get_all_users(token)["content"]["total"]
+        return len(await self.get_all_users(token))
