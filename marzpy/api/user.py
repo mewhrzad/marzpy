@@ -29,6 +29,7 @@ class User:
         online_at = 0,
         sub_last_user_agent:str = "",
         auto_delete_in_days:int = 0,
+        admin=None,
         **_, # Stop causing error when marzban update
         
     ):
@@ -52,7 +53,8 @@ class User:
         self.online_at = online_at
         self.sub_updated_at = sub_updated_at
         self.auto_delete_in_days = auto_delete_in_days
-
+        self.admin = admin
+        
 class UserMethods:
     async def add_user(self, user: User, token: dict):
         """add new user.
